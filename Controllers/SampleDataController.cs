@@ -11,7 +11,7 @@ namespace Vega.Controllers
     {
         private static string[] Summaries = new[]
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+            "Cold", "Mild", "Hot"
         };
 
         [HttpGet("[action]")]
