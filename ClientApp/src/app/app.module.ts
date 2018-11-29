@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { VehicleFormComponent } from './vehicle-form/vehicle-form.component';
 import { VehicleService } from './services/vehicle.service';
 import { HttpModule } from '@angular/http';
@@ -19,7 +18,6 @@ import { HttpModule } from '@angular/http';
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent,
     VehicleFormComponent
   ],
   imports: [
@@ -31,7 +29,6 @@ import { HttpModule } from '@angular/http';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'vehicles/new', component: VehicleFormComponent },
       { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
     ])
   ],
   providers: [
