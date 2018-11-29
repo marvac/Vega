@@ -12,7 +12,7 @@ namespace Vega.Migrations
 
             migrationBuilder.Sql("INSERT INTO Models (Name, MakeId) VALUES ('Make1-ModelA', (SELECT Id FROM Makes WHERE Name = 'Make1'))");
             migrationBuilder.Sql("INSERT INTO Models (Name, MakeId) VALUES ('Make1-ModelB', (SELECT Id FROM Makes WHERE Name = 'Make1'))");
-            migrationBuilder.Sql("INSERT INTO Models (Name, MakeId) VALUES ('Make2-ModelC', (SELECT Id FROM Makes WHERE Name = 'Make1'))");
+            migrationBuilder.Sql("INSERT INTO Models (Name, MakeId) VALUES ('Make1-ModelC', (SELECT Id FROM Makes WHERE Name = 'Make1'))");
 
             migrationBuilder.Sql("INSERT INTO Models (Name, MakeId) VALUES ('Make2-ModelA', (SELECT Id FROM Makes WHERE Name = 'Make2'))");
             migrationBuilder.Sql("INSERT INTO Models (Name, MakeId) VALUES ('Make2-ModelB', (SELECT Id FROM Makes WHERE Name = 'Make2'))");
