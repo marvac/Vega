@@ -27,10 +27,29 @@ namespace Vega.Mapping
 
             /* API resource to Domain */
             CreateMap<VehicleResource, Vehicle>()
+                .ForMember(v => v.Id, options => options.Ignore())
                 .ForMember(v => v.ContactName, options => options.MapFrom(r => r.Contact.Name))
                 .ForMember(v => v.ContactPhone, options => options.MapFrom(r => r.Contact.Phone))
                 .ForMember(v => v.ContactEmail, options => options.MapFrom(r => r.Contact.Email))
-                .ForMember(v => v.Features, options => options.MapFrom(r => r.Features.Select(id => new VehicleFeature { FeatureId = id })));
+                .ForMember(v => v.Features, options => options.Ignore())
+                .AfterMap((r, v) =>
+                {
+                    // Remove unselected features
+                    var removedFeatures = v.Features.Where(f => !r.Features.Contains(f.FeatureId)).ToList();
+                    foreach (var f in removedFeatures)
+                    {
+                        v.Features.Remove(f);
+                    }
+                        
+                    // Add new features
+                    var addedFeatures = r.Features.Where(id => !v.Features.Any(f => f.FeatureId == id))
+                    .Select(id => new VehicleFeature { FeatureId = id }).ToList();
+
+                    foreach (var f in addedFeatures)
+                    {
+                        v.Features.Add(f);
+                    }
+                });
         }
     }
 }
