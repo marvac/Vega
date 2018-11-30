@@ -23,10 +23,20 @@ namespace Vega.Controllers
             _context = context;
         }
 
-        [HttpGet()]
-        public IActionResult GetVehicles()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetVehicle(int id)
         {
-            return NotFound("GET not implemented");
+            var vehicle = await _context.Vehicles.Include(v => v.Features)
+                .SingleOrDefaultAsync(v => v.Id == id);
+
+            if (vehicle == null)
+            {
+                return BadRequest("Vehicle not found");
+            }
+
+            var resource = _mapper.Map<Vehicle, VehicleResource>(vehicle);
+
+            return Ok(resource);
         }
 
         [HttpPost]
@@ -70,6 +80,11 @@ namespace Vega.Controllers
             var vehicle = await _context.Vehicles.Include(v => v.Features)
                 .SingleOrDefaultAsync(v => v.Id == id);
 
+            if (vehicle == null)
+            {
+                return BadRequest("Vehicle not found");
+            }
+
             vehicle.LastUpdated = DateTime.Now;
 
             _mapper.Map<VehicleResource, Vehicle>(resource, vehicle);
@@ -83,6 +98,27 @@ namespace Vega.Controllers
             }
 
             return NotFound("Could not save object");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteVehicle(int id)
+        {
+            var vehicle = await _context.Vehicles.FindAsync(id);
+
+            if (vehicle == null)
+            {
+                return BadRequest("Vehicle not found");
+            }
+
+            _context.Vehicles.Remove(vehicle);
+
+            int results = await _context.SaveChangesAsync();
+            if (results > 0)
+            {
+                return Ok(vehicle);
+            }
+
+            return NotFound("Could not delete object");
         }
     }
 }
