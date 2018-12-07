@@ -27,6 +27,9 @@ namespace Vega.Controllers
         public async Task<IActionResult> GetVehicle(int id)
         {
             var vehicle = await _context.Vehicles.Include(v => v.Features)
+                .ThenInclude(vf => vf.Feature)
+                .Include(v => v.Model)
+                .ThenInclude(m => m.Make)
                 .SingleOrDefaultAsync(v => v.Id == id);
 
             if (vehicle == null)
@@ -40,7 +43,7 @@ namespace Vega.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateVehicle([FromBody]VehicleResource resource)
+        public async Task<IActionResult> CreateVehicle([FromBody]SaveVehicleResource resource)
         {
             if (!ModelState.IsValid)
             {
@@ -54,7 +57,7 @@ namespace Vega.Controllers
                 return BadRequest(ModelState);
             }
 
-            var vehicle = _mapper.Map<VehicleResource, Vehicle>(resource);
+            var vehicle = _mapper.Map<SaveVehicleResource, Vehicle>(resource);
             vehicle.LastUpdated = DateTime.Now;
 
             _context.Add(vehicle);
@@ -62,7 +65,7 @@ namespace Vega.Controllers
             int results = await _context.SaveChangesAsync();
             if (results > 0)
             {
-                var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
+                var result = _mapper.Map<Vehicle, SaveVehicleResource>(vehicle);
                 return Ok(result);
             }
 
@@ -70,7 +73,7 @@ namespace Vega.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateVehicle(int id, [FromBody]VehicleResource resource)
+        public async Task<IActionResult> UpdateVehicle(int id, [FromBody]SaveVehicleResource resource)
         {
             if (!ModelState.IsValid)
             {
@@ -87,13 +90,13 @@ namespace Vega.Controllers
 
             vehicle.LastUpdated = DateTime.Now;
 
-            _mapper.Map<VehicleResource, Vehicle>(resource, vehicle);
+            _mapper.Map<SaveVehicleResource, Vehicle>(resource, vehicle);
 
 
             int results = await _context.SaveChangesAsync();
             if (results > 0)
             {
-                var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
+                var result = _mapper.Map<Vehicle, SaveVehicleResource>(vehicle);
                 return Ok(result);
             }
 

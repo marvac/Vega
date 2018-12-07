@@ -26,7 +26,6 @@ namespace Vega
 
             services.AddDbContext<VegaDbContext>(options =>
             {
-                //options.UseSqlServer(Configuration["ConnectionStrings:Default"]);
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
 
