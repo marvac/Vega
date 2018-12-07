@@ -14,7 +14,7 @@ namespace Vega.Controllers.Resources
 
         public KeyValuePairResource Model { get; set; }
 
-        public MakeResource Make { get; set; }
+        public KeyValuePairResource Make { get; set; }
 
         public bool IsRegistered { get; set; }
 

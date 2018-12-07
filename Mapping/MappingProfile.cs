@@ -17,6 +17,7 @@ namespace Vega.Mapping
 
             //append .ReverseMap() to allow 2-way mapping (if no extra params)
             CreateMap<Make, MakeResource>();
+            CreateMap<Make, KeyValuePairResource>();
             CreateMap<Model, KeyValuePairResource>();
             CreateMap<Vehicle, SaveVehicleResource>()
                 .ForMember(r => r.Contact, options => options.MapFrom(v => new ContactResource { Name = v.ContactName, Phone = v.ContactPhone, Email = v.ContactEmail }))
