@@ -30,14 +30,14 @@ export class VehicleFormComponent implements OnInit {
 
   onMakeChange(): void {
     //re-populate model list
-    var selectedMake = this.makes.find(make => make.id == this.vehicle.make);
+    var selectedMake = this.makes.find(make => make.id == this.vehicle.makeId);
     this.models = selectedMake ? selectedMake.models : [];
+    delete this.vehicle.modelId;
   }
 
   submit(): void {
 
-    alert("submit clicked")
-    var result = this.vehicleService.create(this.vehicle)
+    var result = this.vehicleService.create(this.vehicle);
 
     result.subscribe(vehicle => {
       //this.toastService.success({
