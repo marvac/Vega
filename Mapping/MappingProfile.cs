@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Vega.Controllers.Resources;
-using Vega.Models;
+using Vega.Core.Models;
 
 namespace Vega.Mapping
 {

@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Vega.Controllers.Resources;
-using Vega.Models;
+using Vega.Core;
+using Vega.Core.Models;
 using Vega.Persistence;
 
 namespace Vega.Controllers
@@ -15,20 +16,20 @@ namespace Vega.Controllers
     public class VehiclesController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly VegaDbContext _context;
         private readonly IVehicleRepository _repo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public VehiclesController(IMapper mapper, VegaDbContext context, IVehicleRepository repo)
+        public VehiclesController(IMapper mapper, IVehicleRepository repo, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
-            _context = context;
             _repo = repo;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle(int id)
         {
-            var vehicle = await _repo.GetVehicle(id);
+            var vehicle = await _repo.GetVehicleAsync(id);
 
             if (vehicle == null)
             {
@@ -48,29 +49,15 @@ namespace Vega.Controllers
                 return BadRequest(ModelState);
             }
 
-            var model = await _context.Models.FindAsync(resource.ModelId);
-            if (model == null)
-            {
-                ModelState.AddModelError(nameof(resource.ModelId), $"Invalid {nameof(resource.ModelId)}");
-                return BadRequest(ModelState);
-            }
-
             var vehicle = _mapper.Map<SaveVehicleResource, Vehicle>(resource);
             vehicle.LastUpdated = DateTime.Now;
 
-            _context.Add(vehicle);
-            int results = await _context.SaveChangesAsync();
-            if (results > 0)
-            {
-                await _context.Models.Include(m => m.Make).SingleOrDefaultAsync(m => m.Id == vehicle.ModelId);
+            _repo.AddVehicle(vehicle);
+            vehicle = await _repo.GetVehicleAsync(vehicle.Id);
 
-                vehicle = await _repo.GetVehicle(vehicle.Id);
+            var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
 
-                var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
-                return Ok(result);
-            }
-
-            return NotFound("Could not save object");
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
@@ -81,7 +68,7 @@ namespace Vega.Controllers
                 return BadRequest(ModelState);
             }
 
-            var vehicle = await _repo.GetVehicle(id);
+            var vehicle = await _repo.GetVehicleAsync(id);
 
             if (vehicle == null)
             {
@@ -93,27 +80,25 @@ namespace Vega.Controllers
             _mapper.Map<SaveVehicleResource, Vehicle>(resource, vehicle);
 
 
-            int results = await _context.SaveChangesAsync();
-            if (results > 0)
-            {
-                var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
-                return Ok(result);
-            }
+            await _unitOfWork.CompleteAsync();
 
-            return NotFound("Could not save object");
+            vehicle = await _repo.GetVehicleAsync(vehicle.Id);
+            var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
+
+            return Ok(vehicle);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
-            var succeeded = await _repo.DeleteVehicle(id);
+            var succeeded = await _repo.DeleteVehicleAsync(id);
 
             if (!succeeded)
             {
                 return BadRequest("Vehicle not found");
             }
 
-            int results = await _context.SaveChangesAsync();
+            int results = await _unitOfWork.CompleteAsync();
 
             if (results > 0)
             {
