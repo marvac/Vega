@@ -17,7 +17,8 @@ export class VehicleFormComponent implements OnInit {
   models: any[];
   features: any[];
   vehicle: any = {
-    features: []
+    features: [],
+    contact: {}
   };
 
   constructor(private router: Router, private vehicleService: VehicleService) { }
@@ -34,6 +35,7 @@ export class VehicleFormComponent implements OnInit {
     //re-populate model list
     var selectedMake = this.makes.find(make => make.id == this.vehicle.makeId);
     this.models = selectedMake ? selectedMake.models : [];
+
     delete this.vehicle.modelId;
   }
 
@@ -59,8 +61,9 @@ export class VehicleFormComponent implements OnInit {
       //  showClose: true,
       //  timeout: 5000
       //});
+      console.log(vehicle);
 
-      this.router.navigate(['/vehicles/', vehicle.id])
+      this.router.navigate(['/vehicles/', vehicle.id]);
     })
   }
 

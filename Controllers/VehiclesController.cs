@@ -53,6 +53,8 @@ namespace Vega.Controllers
             vehicle.LastUpdated = DateTime.Now;
 
             _repo.AddVehicle(vehicle);
+            await _unitOfWork.CompleteAsync();
+
             vehicle = await _repo.GetVehicleAsync(vehicle.Id);
 
             var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
