@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -12,6 +12,7 @@ import { VehicleService } from './services/vehicle.service';
 import { HttpModule } from '@angular/http';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppErrorHandler } from './app.error-handler';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ])
   ],
   providers: [
-    VehicleService
+    VehicleService,
+    { provide: ErrorHandler, useClass: AppErrorHandler }
   ],
   bootstrap: [AppComponent]
 })

@@ -1,8 +1,9 @@
 import * as _ from 'underscore';
 import { VehicleService } from './../services/vehicle.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import 'rxjs/add/Observable/forkJoin';
 import { Router } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'vehicle-form',
@@ -21,7 +22,10 @@ export class VehicleFormComponent implements OnInit {
     contact: {}
   };
 
-  constructor(private router: Router, private vehicleService: VehicleService) { }
+  constructor(private router: Router, private vehicleService: VehicleService, private toastr: ToastsManager, vcr: ViewContainerRef)
+  {
+    this.toastr.setRootViewContainerRef(vcr);
+  }
 
   ngOnInit() {
     this.vehicleService.getMakes().subscribe(makes => {
@@ -53,11 +57,9 @@ export class VehicleFormComponent implements OnInit {
 
     var result = this.vehicleService.create(this.vehicle);
 
-    result.subscribe(vehicle => console.log(vehicle),
-      error => {
-        //todo: swap this with a toast module
-        console.log(`Error: ${error}`)
-      });
+    result.subscribe(vehicle => {
+      this.toastr.success('Submitted successfully', 'Success');
+    });
   }
 
 }
