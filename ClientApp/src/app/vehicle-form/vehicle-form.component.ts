@@ -53,18 +53,11 @@ export class VehicleFormComponent implements OnInit {
 
     var result = this.vehicleService.create(this.vehicle);
 
-    result.subscribe(vehicle => {
-      //this.toastService.success({
-      //  title: 'Success',
-      //  msg: 'Data was sucessfully saved.',
-      //  theme: 'bootstrap',
-      //  showClose: true,
-      //  timeout: 5000
-      //});
-      console.log(vehicle);
-
-      this.router.navigate(['/vehicles/', vehicle.id]);
-    })
+    result.subscribe(vehicle => console.log(vehicle),
+      error => {
+        //todo: swap this with a toast module
+        console.log(`Error: ${error}`)
+      });
   }
 
 }

@@ -1,6 +1,6 @@
 <h1 class="page-header">Add New Vehicle</h1>
 <p>{{ vehicle | json }}</p>
-<form #f="ngForm" (ngSubmit)="submit()">
+<form #f="ngForm" (ngSubmit)="submit()" novalidate>
   <div class="form-group">
     <div class="alert alert-danger" *ngIf="make.touched && !make.valid">
       Please specify a make
