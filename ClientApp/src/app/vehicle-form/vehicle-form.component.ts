@@ -1,7 +1,7 @@
 import * as _ from 'underscore';
 import { VehicleService } from './../services/vehicle.service';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import 'rxjs/add/Observable/forkJoin';
+import 'rxjs/add/observable/forkJoin';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr';
 import { Observable } from 'rxjs/Observable';
@@ -47,7 +47,6 @@ export class VehicleFormComponent implements OnInit {
   }
 
   ngOnInit() {
-
     var sources = [
       this.vehicleService.getMakes(),
       this.vehicleService.getFeatures(),
@@ -56,7 +55,6 @@ export class VehicleFormComponent implements OnInit {
     if (this.vehicle.id) {
       sources.push(this.vehicleService.getVehicle(this.vehicle.id));
     }
-
 
     Observable.forkJoin(sources).subscribe(data => {
       this.makes = data[0];
@@ -67,9 +65,11 @@ export class VehicleFormComponent implements OnInit {
         this.populateModels();
       }
     }, err => {
+
       if (err.status == 404)
         this.router.navigate(['/home']);
-    });
+      });
+
   }
 
   private setVehicle(v: Vehicle) {
@@ -106,11 +106,28 @@ export class VehicleFormComponent implements OnInit {
 
   submit(): void {
 
-    var result = this.vehicleService.create(this.vehicle);
-    console.log(this.vehicle);
-    result.subscribe(vehicle => {
-      this.toastr.success('Submitted successfully', 'Success');
-    });
+    if (this.vehicle.id) {
+      this.vehicleService.update(this.vehicle)
+        .subscribe(x => {
+          this.toastr.success('Vehicle updated successfully', 'Success');
+        });
+    }
+    else {
+      this.vehicleService.create(this.vehicle)
+        .subscribe(x => {
+          this.toastr.success('Vehicle created successfully', 'Success');
+      });
+    }
+    
+  }
+
+  delete(): void {
+    if (confirm('Do you really want to delete this vehicle?')) {
+      this.vehicleService.delete(this.vehicle.id)
+        .subscribe(x => {
+          this.router.navigate(['/home']);
+        })
+    }
   }
 
 }

@@ -12,7 +12,7 @@ export class AppErrorHandler implements ErrorHandler {
     this.toastr = this.injector.get(ToastsManager);
 
     this.ngZone.run(() => {
-      this.toastr.error("An unexpected error occured.", "Error");
+      this.toastr.error(error, "Error");
     });
 
     }
