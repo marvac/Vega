@@ -2,7 +2,7 @@ import * as _ from 'underscore';
 import { VehicleService } from './../services/vehicle.service';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import 'rxjs/add/Observable/forkJoin';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr';
 
 @Component({
@@ -22,12 +22,25 @@ export class VehicleFormComponent implements OnInit {
     contact: {}
   };
 
-  constructor(private router: Router, private vehicleService: VehicleService, private toastr: ToastsManager, vcr: ViewContainerRef)
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private vehicleService: VehicleService,
+    private toastr: ToastsManager,
+    vcr: ViewContainerRef)
   {
     this.toastr.setRootViewContainerRef(vcr);
+    route.params.subscribe(p => {
+      this.vehicle.id = +p['id'];
+    });
   }
 
   ngOnInit() {
+    this.vehicleService.getVehicle(this.vehicle.id)
+      .subscribe(v => {
+        this.vehicle = v
+      });
+
     this.vehicleService.getMakes().subscribe(makes => {
       this.makes = makes;
     })
@@ -56,7 +69,7 @@ export class VehicleFormComponent implements OnInit {
   submit(): void {
 
     var result = this.vehicleService.create(this.vehicle);
-
+    console.log(this.vehicle);
     result.subscribe(vehicle => {
       this.toastr.success('Submitted successfully', 'Success');
     });
