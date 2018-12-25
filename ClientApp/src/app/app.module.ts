@@ -20,7 +20,8 @@ import { VehicleListComponent } from './vehicle-list.component';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    VehicleFormComponent
+    VehicleFormComponent,
+    VehicleListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -30,7 +31,7 @@ import { VehicleListComponent } from './vehicle-list.component';
     HttpModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'vehicles/new', component: VehicleFormComponent },
       { path: 'vehicles/:id', component: VehicleFormComponent },
       { path: 'vehicles', component: VehicleListComponent }

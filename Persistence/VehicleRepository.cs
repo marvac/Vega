@@ -19,7 +19,12 @@ namespace Vega.Persistence
 
         public async Task<IEnumerable<Vehicle>> GetVehiclesAsync()
         {
-            return await _context.Vehicles.ToListAsync();
+            return await _context.Vehicles
+                .Include(v => v.Model)
+                .ThenInclude(m => m.Make)
+                .Include(v => v.Features)
+                .ThenInclude(vf => vf.Feature)
+                .ToListAsync();
         }
 
         public async Task<Vehicle> GetVehicleAsync(int id, bool includeRelated = true)
