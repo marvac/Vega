@@ -13,6 +13,7 @@ import { HttpModule } from '@angular/http';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppErrorHandler } from './app.error-handler';
+import { VehicleListComponent } from './vehicle-list.component';
 
 @NgModule({
   declarations: [
@@ -29,9 +30,10 @@ import { AppErrorHandler } from './app.error-handler';
     HttpModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
       { path: 'vehicles/new', component: VehicleFormComponent },
       { path: 'vehicles/:id', component: VehicleFormComponent },
+      { path: 'vehicles', component: VehicleListComponent }
     ])
   ],
   providers: [

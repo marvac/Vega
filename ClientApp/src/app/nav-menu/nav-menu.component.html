@@ -17,6 +17,11 @@
                 <span class='glyphicon glyphicon-home'></span> Home
               </a>
             </li>
+            <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+              <a [routerLink]='["/vehicles"]' (click)='collapse()'>
+                <span class='glyphicon glyphicon-th-list'></span> Vehicle List
+              </a>
+            </li>
             <li [routerLinkActive]='["link-active"]'>
               <a [routerLink]='["/vehicles/new"]' (click)='collapse()'>
                 <span class='glyphicon glyphicon-plus'></span> Add Vehicle

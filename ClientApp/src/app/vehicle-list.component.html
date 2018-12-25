@@ -1,0 +1,36 @@
+<h2>Vehicles</h2>
+<p>
+  <a [routerLink]="['/vehicles/new']" class="btn btn-primary">New Vehicle</a>
+</p>
+
+<div class="form-group">
+  <label for="make">Make</label>
+  <select id="make" class="form-control">
+    <option value=""></option>
+    <option *ngFor="let m of makes" value="{{ m.id }}">{{ m.Name }}</option>
+  </select>
+
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Make</th>
+      <th>Model</th>
+      <th>Contact</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let v of queryResult.items">
+      <td>{{ v.id }}</td>
+      <td>{{ v.make.name }}</td>
+      <td>{{ v.model.name }}</td>
+      <td>{{ v.contact.name }}</td>
+      <td>
+        <a [routerLink]="['/vehicles/', v.id]">View</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

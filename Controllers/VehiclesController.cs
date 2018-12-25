@@ -26,6 +26,13 @@ namespace Vega.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetVehicles()
+        {
+            var vehicles = await _repo.GetVehiclesAsync();
+            return Ok(vehicles);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle(int id)
         {
