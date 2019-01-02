@@ -16,6 +16,7 @@ namespace Vega.Mapping
             /* Domain to API Resource */
 
             //append .ReverseMap() to allow 2-way mapping (if no extra params)
+            CreateMap(typeof(QueryResult<>), typeof(QueryResultResource<>));
             CreateMap<Make, MakeResource>();
             CreateMap<Make, KeyValuePairResource>();
             CreateMap<Model, KeyValuePairResource>();

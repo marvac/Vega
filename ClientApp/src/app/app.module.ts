@@ -14,6 +14,7 @@ import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppErrorHandler } from './app.error-handler';
 import { VehicleListComponent } from './vehicle-list.component';
+import { PaginationComponent } from './shared/pagination.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { VehicleListComponent } from './vehicle-list.component';
     NavMenuComponent,
     HomeComponent,
     VehicleFormComponent,
-    VehicleListComponent
+    VehicleListComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
