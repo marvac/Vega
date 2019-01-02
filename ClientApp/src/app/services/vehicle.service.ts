@@ -25,8 +25,8 @@ export class VehicleService {
       .map(response => response.json());
   }
 
-  getVehicles(filter) {
-    return this.http.get(`${this.vehiclesEndpoint}?${this.toQueryString(filter)}`)
+  getVehicles(query) {
+    return this.http.get(`${this.vehiclesEndpoint}?${this.toQueryString(query)}`)
       .map(response => response.json());
   }
 
