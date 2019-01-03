@@ -1,9 +1,5 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Vega.Controllers.Resources;
 using Vega.Core.Models;
 
@@ -16,6 +12,7 @@ namespace Vega.Mapping
             /* Domain to API Resource */
 
             //append .ReverseMap() to allow 2-way mapping (if no extra params)
+            CreateMap<Photo, PhotoResource>();
             CreateMap(typeof(QueryResult<>), typeof(QueryResultResource<>));
             CreateMap<Make, MakeResource>();
             CreateMap<Make, KeyValuePairResource>();

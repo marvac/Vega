@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Vega.Controllers.Resources;
 using Vega.Core;
 using Vega.Core.Models;
-using Vega.Persistence;
 
 namespace Vega.Controllers
 {

@@ -2,12 +2,11 @@
 
 namespace Vega.Core.Models
 {
-    public class Feature
+    public class Photo
     {
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        public string Name { get; set; }
+        [Required, StringLength(255)]
+        public string FileName { get; set; }
     }
 }

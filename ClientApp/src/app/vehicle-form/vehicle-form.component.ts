@@ -1,6 +1,6 @@
 import * as _ from 'underscore';
 import { VehicleService } from './../services/vehicle.service';
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/observable/forkJoin';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr';
@@ -11,8 +11,6 @@ import { Vehicle, SaveVehicle } from '../models/vehicle';
   selector: 'vehicle-form',
   templateUrl: './vehicle-form.component.html',
   styleUrls: ['./vehicle-form.component.css']
-
-
 })
 export class VehicleFormComponent implements OnInit {
 
@@ -37,10 +35,8 @@ export class VehicleFormComponent implements OnInit {
     private router: Router,
     private vehicleService: VehicleService,
     private toastr: ToastsManager,
-    vcr: ViewContainerRef)
+ )
   {
-    this.toastr.setRootViewContainerRef(vcr);
-
     route.params.subscribe(p => {
       this.vehicle.id = +p['id'] || 0;
     });
@@ -104,21 +100,12 @@ export class VehicleFormComponent implements OnInit {
     }
   }
 
-  submit(): void {
-
-    if (this.vehicle.id) {
-      this.vehicleService.update(this.vehicle)
-        .subscribe(x => {
-          this.toastr.success('Vehicle updated successfully', 'Success');
-        });
-    }
-    else {
-      this.vehicleService.create(this.vehicle)
-        .subscribe(x => {
-          this.toastr.success('Vehicle created successfully', 'Success');
-      });
-    }
-    
+  submit() {
+    var result$ = (this.vehicle.id) ? this.vehicleService.update(this.vehicle) : this.vehicleService.create(this.vehicle);
+    result$.subscribe(vehicle => {
+      this.toastr.success("Success", "Vehicle saved successfully");
+      this.router.navigate(['/vehicles/', vehicle.id])
+    });
   }
 
   delete(): void {
