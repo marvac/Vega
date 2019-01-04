@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Vega.Controllers.Resources;
 using Vega.Core;
@@ -18,13 +20,20 @@ namespace Vega.Controllers
         private readonly IMapper _mapper;
         private readonly IVehicleRepository _repo;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly PhotoSettings _photoSettings;
 
-        public PhotosController(IHostingEnvironment env, IMapper mapper, IVehicleRepository repo, IUnitOfWork unitOfWork)
+        public PhotosController(
+            IHostingEnvironment env, 
+            IMapper mapper, 
+            IVehicleRepository repo, 
+            IUnitOfWork unitOfWork, 
+            IOptionsSnapshot<PhotoSettings> options)
         {
             _env = env;
             _mapper = mapper;
             _repo = repo;
             _unitOfWork = unitOfWork;
+            _photoSettings = options.Value;
         }
 
         [HttpPost]
@@ -36,6 +45,26 @@ namespace Vega.Controllers
                 return NotFound("Vehicle not found");
             }
 
+            if (file == null)
+            {
+                return BadRequest("Invalid file");
+            }
+
+            if (file.Length <= _photoSettings.MinBytes)
+            {
+                return BadRequest("Empty File");
+            }
+
+            if (file.Length > _photoSettings.MaxBytes)
+            {
+                return BadRequest("Max file size exceeded");
+            }
+
+            if (!_photoSettings.HasValidExtension(file.FileName))
+            {
+                return BadRequest("Invalid file type");
+            }
+
             var folderPath = Path.Combine(_env.WebRootPath, "uploads");
 
             if (!Directory.Exists(folderPath))
@@ -43,7 +72,8 @@ namespace Vega.Controllers
                 Directory.CreateDirectory(folderPath);
             }
 
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            string fileExtension = Path.GetExtension(file.FileName);
+            var fileName = $"{Guid.NewGuid()}{fileExtension}";
             var uploadFilePath = Path.Combine(folderPath, fileName);
 
             using (var fs = new FileStream(uploadFilePath, FileMode.Create))

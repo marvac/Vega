@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Vega.Core;
+using Vega.Core.Models;
 using Vega.Persistence;
 
 namespace Vega
@@ -26,6 +27,7 @@ namespace Vega
         {
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
 
             services.AddAutoMapper();
 
