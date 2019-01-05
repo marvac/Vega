@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -46,6 +47,7 @@ namespace Vega.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateVehicle([FromBody]SaveVehicleResource resource)
         {
             if (!ModelState.IsValid)
@@ -67,6 +69,7 @@ namespace Vega.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateVehicle(int id, [FromBody]SaveVehicleResource resource)
         {
             if (!ModelState.IsValid)
@@ -95,6 +98,7 @@ namespace Vega.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
             var succeeded = await _repo.DeleteVehicleAsync(id);
