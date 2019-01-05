@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,20 +19,23 @@ namespace Vega.Controllers
     {
         private readonly IHostingEnvironment _env;
         private readonly IMapper _mapper;
-        private readonly IVehicleRepository _repo;
+        private readonly IVehicleRepository _vehicleRepo;
+        private readonly IPhotoRepository _photoRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly PhotoSettings _photoSettings;
 
         public PhotosController(
             IHostingEnvironment env, 
             IMapper mapper, 
-            IVehicleRepository repo, 
+            IVehicleRepository vehicleRepo, 
+            IPhotoRepository photoRepo,
             IUnitOfWork unitOfWork, 
             IOptionsSnapshot<PhotoSettings> options)
         {
             _env = env;
             _mapper = mapper;
-            _repo = repo;
+            _vehicleRepo = vehicleRepo;
+            _photoRepo = photoRepo;
             _unitOfWork = unitOfWork;
             _photoSettings = options.Value;
         }
@@ -39,7 +43,7 @@ namespace Vega.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload(int vehicleId, IFormFile file)
         {
-            var vehicle = await _repo.GetVehicleAsync(vehicleId, false);
+            var vehicle = await _vehicleRepo.GetVehicleAsync(vehicleId, false);
             if (vehicle == null)
             {
                 return NotFound("Vehicle not found");
@@ -88,6 +92,14 @@ namespace Vega.Controllers
 
             var resource = _mapper.Map<Photo, PhotoResource>(photo);
             return Ok(resource);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<PhotoResource>> GetPhotos(int vehicleId)
+        {
+            var photos = await _photoRepo.GetPhotos(vehicleId);
+
+            return _mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
         }
     }
 }
