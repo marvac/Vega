@@ -38,6 +38,11 @@
       <label class="btn btn-default">
         Browse <input type="file" (change)="uploadPhoto()" #fileInput hidden>
       </label>
+      <div class="progress" *ngIf="progress && progress.percentage < 100">
+        <div class="progress-bar" [style.width]="progress.percentage + '%'">
+          <span class="sr-only">{{ progress.percentage }}%</span>
+        </div>
+      </div>
       <hr />
       <div class="container">
         <img class="img-thumbnail" *ngFor="let p of photos" src="/uploads/{{ p.fileName }}" />

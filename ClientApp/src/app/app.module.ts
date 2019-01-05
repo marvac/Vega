@@ -9,7 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { VehicleFormComponent } from './vehicle-form/vehicle-form.component';
 import { VehicleService } from './services/vehicle.service';
-import { HttpModule } from '@angular/http';
+import { HttpModule, BrowserXhr } from '@angular/http';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppErrorHandler } from './app.error-handler';
@@ -17,6 +17,7 @@ import { VehicleListComponent } from './vehicle-list.component';
 import { PaginationComponent } from './shared/pagination.component';
 import { ViewVehicleComponent } from './view-vehicle/view-vehicle.component';
 import { PhotoService } from './services/photo.service';
+import { BrowserXhrWithProgress, ProgressService } from './services/progress.service';
 
 @NgModule({
   declarations: [
@@ -45,9 +46,10 @@ import { PhotoService } from './services/photo.service';
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
+    { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
     VehicleService,
-    PhotoService
-
+    PhotoService,
+    ProgressService
   ],
   bootstrap: [AppComponent]
 })
