@@ -16,7 +16,7 @@ export class AuthService {
     clientID: 'MZWEsfweD5vtrlMQ9AxoFNoqDrLJkg1q',
     domain: 'marvacvega.auth0.com',
     responseType: 'token id_token',
-    redirectUri: 'http://localhost:3000/callback',
+    redirectUri: 'http://localhost:62124',
     scope: 'openid'
   });
 
