@@ -10,7 +10,7 @@ export class AppErrorHandler implements ErrorHandler {
 
   handleError(error: any): void {
     this.toastr = this.injector.get(ToastsManager);
-
+    console.log(error);
     this.ngZone.run(() => {
       this.toastr.error(error, "Error");
     });

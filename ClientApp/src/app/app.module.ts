@@ -3,8 +3,9 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
+import { ChartModule } from 'angular2-chartjs';
+
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { VehicleFormComponent } from './vehicle-form/vehicle-form.component';
@@ -19,6 +20,7 @@ import { ViewVehicleComponent } from './view-vehicle/view-vehicle.component';
 import { PhotoService } from './services/photo.service';
 import { BrowserXhrWithProgress, ProgressService } from './services/progress.service';
 import { AuthService } from './services/auth.service';
+import { ChartsComponent } from './charts/charts.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { AuthService } from './services/auth.service';
     VehicleFormComponent,
     VehicleListComponent,
     PaginationComponent,
+    ChartsComponent,
     ViewVehicleComponent
   ],
   imports: [
@@ -37,12 +40,14 @@ import { AuthService } from './services/auth.service';
     HttpClientModule,
     HttpModule,
     FormsModule,
+    ChartModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
       { path: 'vehicles/new', component: VehicleFormComponent },
       { path: 'vehicles/edit/:id', component: VehicleFormComponent },
       { path: 'vehicles/:id', component: ViewVehicleComponent },
       { path: 'vehicles', component: VehicleListComponent },
+      { path: 'charts', component: ChartsComponent }
     ])
   ],
   providers: [

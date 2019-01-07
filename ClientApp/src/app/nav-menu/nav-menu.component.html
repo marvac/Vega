@@ -32,6 +32,12 @@
                 <span class='glyphicon glyphicon-plus'></span> Add Vehicle
               </a>
             </li>
+
+            <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+              <a [routerLink]='["/charts"]' (click)='collapse()'>
+                <span class='glyphicon glyphicon-equalizer'></span> Charts
+              </a>
+            </li>
           </ul>
         </div>
     </div>

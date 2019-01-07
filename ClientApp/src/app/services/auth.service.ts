@@ -24,6 +24,7 @@ export class AuthService {
     this._idToken = '';
     this._accessToken = '';
     this._expiresAt = 0;
+
   }
 
   get accessToken(): string {
@@ -43,9 +44,9 @@ export class AuthService {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
         this.localLogin(authResult);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
       } else if (err) {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
         console.log(err);
       }
     });
